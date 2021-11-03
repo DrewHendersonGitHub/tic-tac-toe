@@ -1,3 +1,17 @@
 body {
-  background-color: rgb(100, 155, 189);
+  background-color: rgb(197, 191, 137);
+}
+
+button {
+  height: 150px;
+  width: 150px;
+  margin-top: 50px;
+}
+
+h1 {
+  text-align: center;
+}
+
+#game-space {
+  display: none;
 }

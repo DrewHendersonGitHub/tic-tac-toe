@@ -10,7 +10,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tic Tac Toe</title>
 </head>
-  <body>
-
-  </body>
-</html>s
+<body>
+  <div class="container">
+    <h1>Let's play Tic-Tac-Toe, yo!</h1>
+    <hr>
+    <div id="game-space">
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col-2">
+          <button type="submit" class="btn btn-success" id="a1">Empty</button>
+        </div>
+        <div class="col-2">
+          <button type="submit" class="btn btn-success" id="b1">Empty</button>
+        </div>
+        <div class="col-2">
+          <button type="submit" class="btn btn-success" id="c1">Empty</button>
+        </div>
+        <div class="col-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col-2">
+          <button type="submit" class="btn btn-success" id="a2">Empty</button>
+        </div>
+        <div class="col-2">
+          <button type="submit" class="btn btn-success" id="b2">Empty</button>
+        </div>
+        <div class="col-2">
+          <button type="submit" class="btn btn-success" id="c2">Empty</button>
+        </div>
+        <div class="col-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col-2">
+          <button type="submit" class="btn btn-success" id="a3">Empty</button>
+        </div>
+        <div class="col-2">
+          <button type="submit" class="btn btn-success" id="b3">Empty</button>
+        </div>
+        <div class="col-2">
+          <button type="submit" class="btn btn-success" id="c3">Empty</button>
+        </div>
+        <div class="col-3"></div>
+      </div>
+      <hr>
+      <h3 id="player-indicator">Current Player: <span id="player"></span></h3>
+      <h2><span id="outcome"></span></h2>
+    </div>
+    <div id="start-form">
+      <form id="form1">
+        <div class="form-group">
+          <label for="player-1">What is Player One's name?</label>
+          <input id="player-1" class="form-control" type="text" placeholder="Player One" required>
+          <label for="p1-mark">What is Player One's symbol?</label>
+          <input id="p1-mark" class="form-control" type="text"  placeholder="X" maxlength="1" onkeypress="return /[a-z]/i.test(event.key)" required>
+        </div>
+        <div class="form-group">
+          <label for="player-2">What is Player Two's name?</label>
+          <input id="player-2" class="form-control" type="text" placeholder="Player Two" required>
+          <label for="p2-mark">What is Player Two's symbol?</label>
+          <input id="p2-mark" class="form-control" type="text"  placeholder="O" maxlength="1" onkeypress="return /[a-z]/i.test(event.key)" required>
+        </div>
+        <button type="submit" class="btn btn-success">Start Game</button>
+      </form>  
+    </div>
+  </div>
+</body>
+</html>
