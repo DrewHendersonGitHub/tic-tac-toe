@@ -1,6 +1,7 @@
 function Player(name, mark) {
   this.name = name;
   this.mark = mark;
+  this.active = false;
 }
 
 function Space(xCoord, yCoord) {
@@ -20,7 +21,6 @@ function Board() {
 
 Board.prototype.newBoard = function() {
   let xAxis = ['a', 'b', 'c'];
-
   for (let j=0; j<3; j++) {
     for (let i=1; i<=3; i++) {
       let newSpace = new Space(xAxis[j], i.toString());
@@ -36,10 +36,27 @@ Board.prototype.addSpace = function(space) {
 // board.spaces["a1"] to get space(a, 1)
 
 function Game(name1, name2, mark1, mark2) {
-  this.player1 = new Player(name1, mark1);
-  this.player2 = new Player(name2, mark2);
+  this.players = {};
+  this.players[1] = new Player(name1, mark1);
+  this.players[2] = new Player(name2, mark2);
   this.board = new Board();
   this.board.newBoard();
+  this.players[1].active = true;
+}
+
+function activePlayer(ourCurrentGame) {
+  let activeId = 0;
+  let inactiveId = 0;
+  Object.keys(ourCurrentGame.players).forEach(function(key) {
+    if (ourCurrentGame.players[key].active) {
+      activeId = key;
+    } else {
+      inactiveId = key;
+    }
+  });
+  ourCurrentGame.players[activeId].active = false;
+  ourCurrentGame.players[inactiveId].active = true;
+  return [activeId, inactiveId];
 }
 
 $(document).ready(function() {
@@ -53,6 +70,15 @@ $(document).ready(function() {
     const mark1 = $("input#p1-mark").val().toUpperCase();
     const mark2 = $("input#p2-mark").val().toUpperCase();
     let newGame = new Game(name1, name2, mark1, mark2);
+    $("#player").text(newGame.players[1].name);
+    $(".game").on("click", function() {
+      let myTurn = activePlayer(newGame);
+      newGame.board.spaces[this.id].markSpace(newGame.players[myTurn[0]]);
+      this.innerHTML = newGame.players[myTurn[0]].mark;
+      this.disabled = true;
+      console.log(newGame.board.spaces);
+      $("#player").text(newGame.players[myTurn[1]].name);
+    });
   });
 });
 /*
