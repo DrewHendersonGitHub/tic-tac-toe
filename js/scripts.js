@@ -33,7 +33,41 @@ Board.prototype.addSpace = function(space) {
   this.spaces[space.id] = space;
 };
 
-// board.spaces["a1"] to get space(a, 1)
+Board.prototype.gameOver = function() {
+  if (this.spaces['a1'].mark !== '' && this.spaces['a1'].mark === this.spaces['b1'].mark && this.spaces['b1'].mark === this.spaces['c1'].mark) {
+    return 'winner'
+  }
+  if (this.spaces['a2'].mark !== '' && this.spaces['a2'].mark === this.spaces['b2'].mark && this.spaces['b2'].mark === this.spaces['c2'].mark) {
+    return 'winner'
+  }
+  if (this.spaces['a3'].mark !== '' && this.spaces['a3'].mark === this.spaces['b3'].mark && this.spaces['b3'].mark === this.spaces['c3'].mark) {
+    return 'winner'
+  }
+  if (this.spaces['a1'].mark !== '' && this.spaces['a1'].mark === this.spaces['a2'].mark && this.spaces['a2'].mark === this.spaces['a3'].mark) {
+    return 'winner'
+  }
+  if (this.spaces['b1'].mark !== '' && this.spaces['b1'].mark === this.spaces['b2'].mark && this.spaces['b2'].mark === this.spaces['b3'].mark) {
+    return 'winner'
+  }
+  if (this.spaces['c1'].mark !== '' && this.spaces['c1'].mark === this.spaces['c2'].mark && this.spaces['c2'].mark === this.spaces['c3'].mark) {
+    return 'winner'
+  }
+  if (this.spaces['a1'].mark !== '' && this.spaces['a1'].mark === this.spaces['b2'].mark && this.spaces['b2'].mark === this.spaces['c3'].mark) {
+    return 'winner'
+  }
+  if (this.spaces['a3'].mark !== '' && this.spaces['a3'].mark === this.spaces['b2'].mark && this.spaces['b2'].mark === this.spaces['c1'].mark) {
+    return 'winner'
+  }
+  let checkDraw = [];
+  let spaceArray = Object.keys(this.spaces);
+  for (let i = 0; i < spaceArray.length; i++) {
+    checkDraw.push(this.spaces[spaceArray[i]].mark);
+  }
+  if (!checkDraw.includes('')) {
+    return 'Draw!';
+  }
+  return '';
+}
 
 function Game(name1, name2, mark1, mark2) {
   this.players = {};
@@ -69,6 +103,13 @@ $(document).ready(function() {
     const name2 = $("input#player-2").val();
     const mark1 = $("input#p1-mark").val().toUpperCase();
     const mark2 = $("input#p2-mark").val().toUpperCase();
+    let winner = '';
+
+    $("#p1-name").html(name1);
+    $("#p2-name").html(name2);
+    $("#p1-mark").html(mark1);
+    $("#p2-mark").html(mark2);
+
     let newGame = new Game(name1, name2, mark1, mark2);
     $("#player").text(newGame.players[1].name);
     $(".game").on("click", function() {
@@ -76,66 +117,18 @@ $(document).ready(function() {
       newGame.board.spaces[this.id].markSpace(newGame.players[myTurn[0]]);
       this.innerHTML = newGame.players[myTurn[0]].mark;
       this.disabled = true;
-      console.log(newGame.board.spaces);
       $("#player").text(newGame.players[myTurn[1]].name);
+      winner = newGame.board.gameOver();
+      if (winner !== '') {
+        $("#player-indicator").hide();
+        if (winner === 'winner') {
+          $("#outcome").html("The winner is... " + newGame.players[myTurn[0]].name + "!");
+          $(".game").prop('disabled', true);
+        } else {
+          $("#outcome").html("This game is a draw! Better luck next time losers!!");
+        }
+        
+      }
     });
   });
 });
-/*
-  a b c
-1|_|_|_|
-2|_|_|_|
-3|_|_|_|
-*/
-
-/*
-function gameOver(gameBoard) {
-  let winner = '';
-  gameBoard.forEach(function(zone) {
-    if (!gameBoard[0].includes("") && !gameBoard[1].includes("") &&!gameBoard[2].includes("")) {
-      winner = 'Draw!';
-    }
-    if (zone[0] != '' && zone[0] === zone[1] && zone[1] === zone[2]){
-      winner = zone[0];
-    }
-  });
-  return winner;
-}
-
-$(document).ready(function() {
-  let gameSpaces = ['', '', '', '', '', '', '', '', '',];
-  let player1 = 'X';
-  $(".btn").on("click", function() {
-    this.innerHTML = player1;
-    this.disabled = true;
-    let spaceId = parseInt(this.id);
-    gameSpaces[spaceId] = player1;
-    
-    let topRow = [gameSpaces[0], gameSpaces[1], gameSpaces[2]];
-    let midRow = [gameSpaces[3], gameSpaces[4], gameSpaces[5]];
-    let bottomRow = [gameSpaces[6], gameSpaces[7], gameSpaces[8]];
-    let leftColumn = [gameSpaces[0], gameSpaces[3], gameSpaces[6]];
-    let middleColumn = [gameSpaces[1], gameSpaces[4], gameSpaces[7]];
-    let rightColumn = [gameSpaces[2], gameSpaces[5], gameSpaces[8]];
-    let leftDiagonal = [gameSpaces[0], gameSpaces[4], gameSpaces[8]];
-    let rightDiagonal = [gameSpaces[6], gameSpaces[4], gameSpaces[2]];
-
-    let gameBoard = [topRow, midRow, bottomRow, leftColumn, middleColumn, rightColumn, leftDiagonal, rightDiagonal];
-
-    if (player1 === 'X') {
-      player1 = 'O';
-    } else {
-      player1 = 'X';
-    }
-
-    let finished = gameOver(gameBoard);
-    if (finished !== '') {
-      $("#outcome").html("The winner is... " + finished + "!");
-      $(".btn").prop('disabled', true);
-      $("#player-indicator").hide();
-    } else {
-      $("#player").text(player1);
-    }
-  });
-});
-*/
